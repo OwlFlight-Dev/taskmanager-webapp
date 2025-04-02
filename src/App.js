@@ -6,7 +6,7 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
-  const [taskDeadline, setTaskDeadline] = useState(''); // Store the deadline as a string
+  const [taskDeadline, setTaskDeadline] = useState('');
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
 
   // Add new task
@@ -15,7 +15,7 @@ const App = () => {
       const newTask = {
         title: taskTitle,
         description: taskDescription,
-        deadline: taskDeadline, // Keep deadline as string
+        deadline: taskDeadline,
         completed: false,
       };
       setTasks([...tasks, newTask]);
@@ -30,7 +30,7 @@ const App = () => {
     setEditingTask(task);
     setTaskTitle(task.title);
     setTaskDescription(task.description);
-    setTaskDeadline(task.deadline || ''); // Set the deadline if it exists
+    setTaskDeadline(task.deadline);
   };
 
   // Save the edited task
@@ -54,6 +54,17 @@ const App = () => {
   // Delete task
   const deleteTask = (taskToDelete) => {
     setTasks(tasks.filter((task) => task !== taskToDelete));
+  };
+
+  // Toggle task completion status
+  const toggleComplete = (taskToToggle) => {
+    setTasks(
+      tasks.map((task) =>
+        task === taskToToggle
+          ? { ...task, completed: !task.completed }
+          : task
+      )
+    );
   };
 
   return (
@@ -91,16 +102,12 @@ const App = () => {
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
       
-      {/* Deadline TextField with datetime-local */}
+      {/* Deadline Text Field */}
       <TextField
-        label="Deadline"
+        label="Deadline (MM/DD/YYYY HH:mm)"
         variant="outlined"
-        type="datetime-local" // Date-time picker input
         value={taskDeadline}
-        onChange={(e) => setTaskDeadline(e.target.value)} // Update the deadline state
-        InputLabelProps={{
-          shrink: true, // Make sure the label is not overlapping with the input
-        }}
+        onChange={(e) => setTaskDeadline(e.target.value)}
         disabled={editingTask && editingTask.completed} // Disable if task is completed
       />
 
@@ -117,7 +124,14 @@ const App = () => {
       {/* Task List */}
       <Box mt={3}>
         {tasks.map((task, index) => (
-          <Card key={index} sx={{ marginBottom: 2 }}>
+          <Card
+            key={index}
+            sx={{
+              marginBottom: 2,
+              backgroundColor: task.completed ? 'rgba(0, 255, 0, 0.1)' : 'white', // Change background for completed tasks
+              textDecoration: task.completed ? 'line-through' : 'none', // Strikethrough for completed tasks
+            }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -126,12 +140,20 @@ const App = () => {
                   {task.deadline && <Typography variant="body2" color="textSecondary">{task.deadline}</Typography>}
                 </Box>
                 <Box>
-                  <IconButton color="primary" onClick={() => startEditingTask(task)}>
+                  <IconButton color="primary" onClick={() => startEditingTask(task)} disabled={task.completed}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => deleteTask(task)}>
+                  <IconButton color="error" onClick={() => deleteTask(task)} disabled={task.completed}>
                     <Delete />
                   </IconButton>
+                  <Button
+                    variant="outlined"
+                    color={task.completed ? "secondary" : "primary"}
+                    onClick={() => toggleComplete(task)} // Toggle complete
+                    disabled={task.completed && editingTask}
+                  >
+                    {task.completed ? "Uncomplete" : "Complete"}
+                  </Button>
                 </Box>
               </Box>
             </CardContent>
