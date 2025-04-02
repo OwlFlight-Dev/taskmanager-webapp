@@ -52,7 +52,7 @@ const TaskForm = ({ onAddTask }) => {
       />
       <TextField
         label="Deadline"
-        type="datetime-local"
+        type="date"
         variant="outlined"
         value={taskDeadline}
         onChange={(e) => setTaskDeadline(e.target.value)}
