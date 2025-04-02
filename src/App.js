@@ -8,7 +8,6 @@ const App = () => {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskDeadline, setTaskDeadline] = useState(''); // Deadline as a string
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
-  const deadlineRef = React.useRef(null);  // Reference to the datetime input
 
   // Add new task
   const addTask = () => {
@@ -68,13 +67,6 @@ const App = () => {
     );
   };
 
-  // Focus the date input field when the row is clicked
-  const handleDateRowClick = () => {
-    if (deadlineRef.current) {
-      deadlineRef.current.click(); // Trigger click on the input to open the date-time picker
-    }
-  };
-
   return (
     <Box
       component="form"
@@ -110,27 +102,14 @@ const App = () => {
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
       
-      {/* Clickable Deadline Row */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          cursor: 'pointer', // Make the entire row clickable
-          padding: '10px 0',
-        }}
-        onClick={handleDateRowClick} // Trigger focus when clicking anywhere in the row
-      >
-        <Typography variant="body2">Deadline</Typography>
-        <input
-          ref={deadlineRef}
-          type="datetime-local"
-          value={taskDeadline}
-          onChange={(e) => setTaskDeadline(e.target.value)}
-          disabled={editingTask && editingTask.completed} // Disable if task is completed
-          style={{ padding: '8px', fontSize: '16px' }}
-        />
-      </Box>
+      {/* Deadline Input */}
+      <input
+        type="datetime-local"
+        value={taskDeadline}
+        onChange={(e) => setTaskDeadline(e.target.value)}
+        disabled={editingTask && editingTask.completed} // Disable if task is completed
+        style={{ padding: '8px', fontSize: '16px' }}
+      />
 
       {editingTask ? (
         <Button variant="contained" color="primary" onClick={saveTask}>
