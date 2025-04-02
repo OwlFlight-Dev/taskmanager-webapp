@@ -148,7 +148,6 @@ const App = () => {
                         onChange={() => toggleComplete(task)} // Toggle completion on checkbox change
                       />
                     }
-                    label="Completed"
                   />
                   <IconButton color="primary" onClick={() => startEditingTask(task)} disabled={task.completed}>
                     <Edit />
