@@ -71,7 +71,7 @@ const App = () => {
   // Focus the date input field when the row is clicked
   const handleDateRowClick = () => {
     if (deadlineRef.current) {
-      deadlineRef.current.focus(); // Focus the input field
+      deadlineRef.current.click(); // Trigger click on the input to open the date-time picker
     }
   };
 
