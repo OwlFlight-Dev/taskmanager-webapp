@@ -8,6 +8,7 @@ const App = () => {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskDeadline, setTaskDeadline] = useState(''); // Deadline as a string
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
+  const deadlineRef = React.useRef(null);  // Reference to the datetime input
 
   // Add new task
   const addTask = () => {
@@ -67,6 +68,13 @@ const App = () => {
     );
   };
 
+  // Focus the date input field when the row is clicked
+  const handleDateClick = () => {
+    if (deadlineRef.current) {
+      deadlineRef.current.focus(); // Focus the input field
+    }
+  };
+
   return (
     <Box
       component="form"
@@ -102,14 +110,27 @@ const App = () => {
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
       
-      {/* Deadline Input */}
-      <input
-        type="datetime-local"
-        value={taskDeadline}
-        onChange={(e) => setTaskDeadline(e.target.value)}
-        disabled={editingTask && editingTask.completed} // Disable if task is completed
-        style={{ padding: '8px', fontSize: '16px' }}
-      />
+      {/* Clickable Deadline Row */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          cursor: 'pointer', // Make the entire row clickable
+          padding: '10px 0',
+        }}
+        onClick={handleDateClick}
+      >
+        <Typography variant="body2">Deadline</Typography>
+        <input
+          ref={deadlineRef}
+          type="datetime-local"
+          value={taskDeadline}
+          onChange={(e) => setTaskDeadline(e.target.value)}
+          disabled={editingTask && editingTask.completed} // Disable if task is completed
+          style={{ padding: '8px', fontSize: '16px' }}
+        />
+      </Box>
 
       {editingTask ? (
         <Button variant="contained" color="primary" onClick={saveTask}>
