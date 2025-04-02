@@ -16,7 +16,7 @@ Follow the steps below to get the project up and running locally.
     Navigate to the project folder and install the required dependencies:
 
     ```bash
-    cd <project-folder>
+    cd taskmanager-webapp
     npm install
 
 3. **Run the application:**
