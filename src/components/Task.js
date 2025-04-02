@@ -1,57 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Card, CardContent, Typography, Button, Checkbox, Box } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 
-const Task = ({ task, deleteTask, toggleComplete, editTask }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTask, setEditedTask] = useState(task);
-
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditedTask({ ...editedTask, [name]: value });
-  };
-
-  const handleSaveEdit = () => {
-    editTask(task.id, editedTask);
-    setIsEditing(false);
-  };
-
+const Task = ({ task, onEdit, onDelete, onComplete }) => {
   return (
-    <li style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-      {isEditing ? (
-        <div>
-          <input 
-            type="text" 
-            name="title" 
-            value={editedTask.title} 
-            onChange={handleEditChange} 
+    <Card sx={{ marginBottom: 2, backgroundColor: task.completed ? '#e0f7fa' : 'white' }}>
+      <CardContent>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Box>
+            <Typography variant="h6">{task.title}</Typography>
+            {task.description && <Typography variant="body2">{task.description}</Typography>}
+            {task.deadline && <Typography variant="body2" color="textSecondary">{task.deadline}</Typography>}
+          </Box>
+          <Checkbox
+            checked={task.completed}
+            onChange={() => onComplete(task)}
+            color="primary"
           />
-          <input 
-            type="text" 
-            name="description" 
-            value={editedTask.description} 
-            onChange={handleEditChange} 
-          />
-          <input 
-            type="datetime-local" 
-            name="deadline" 
-            value={editedTask.deadline} 
-            onChange={handleEditChange} 
-          />
-          <button onClick={handleSaveEdit}>Save</button>
-        </div>
-      ) : (
-        <div>
-          <span>{task.title}</span> - <span>{task.deadline}</span> 
-          {task.description && <span> - {task.description}</span>}
-          <input 
-            type="checkbox" 
-            checked={task.completed} 
-            onChange={() => toggleComplete(task.id)} 
-          />
-          <button onClick={() => deleteTask(task.id)}>Delete</button>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
-        </div>
-      )}
-    </li>
+        </Box>
+        <Box display="flex" gap={1}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            onClick={() => onEdit(task)}
+            startIcon={<Edit />}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            onClick={() => onDelete(task)}
+            startIcon={<Delete />}
+          >
+            Delete
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
 

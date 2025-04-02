@@ -1,51 +1,69 @@
 import React, { useState } from 'react';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
-const TaskForm = ({ addTask }) => {
-  const [newTask, setNewTask] = useState({
-    title: '',
-    description: '',
-    deadline: '',
-    completed: false,
-  });
+const TaskForm = ({ onAddTask }) => {
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskDeadline, setTaskDeadline] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewTask({ ...newTask, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (newTask.title) {
-      const taskWithId = { ...newTask, id: Date.now() };
-      addTask(taskWithId);
-      setNewTask({ title: '', description: '', deadline: '', completed: false });
+  const handleAddTask = () => {
+    if (taskTitle) {
+      onAddTask({
+        title: taskTitle,
+        description: taskDescription,
+        deadline: taskDeadline,
+        completed: false,
+      });
+      setTaskTitle('');
+      setTaskDescription('');
+      setTaskDeadline('');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        name="title" 
-        placeholder="Task Title" 
-        value={newTask.title} 
-        onChange={handleChange} 
-        required 
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: 2,
+        borderRadius: 2,
+        boxShadow: 2,
+        backgroundColor: 'background.paper',
+      }}
+    >
+      <Typography variant="h6" gutterBottom>
+        Add New Task
+      </Typography>
+      <TextField
+        label="Task Title"
+        variant="outlined"
+        value={taskTitle}
+        onChange={(e) => setTaskTitle(e.target.value)}
       />
-      <textarea 
-        name="description" 
-        placeholder="Task Description" 
-        value={newTask.description} 
-        onChange={handleChange} 
+      <TextField
+        label="Task Description"
+        variant="outlined"
+        value={taskDescription}
+        onChange={(e) => setTaskDescription(e.target.value)}
+        multiline
+        rows={3}
       />
-      <input 
-        type="datetime-local" 
-        name="deadline" 
-        value={newTask.deadline} 
-        onChange={handleChange} 
+      <TextField
+        label="Deadline"
+        type="datetime-local"
+        variant="outlined"
+        value={taskDeadline}
+        onChange={(e) => setTaskDeadline(e.target.value)}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
-      <button type="submit">Add Task</button>
-    </form>
+      <Button variant="contained" color="primary" onClick={handleAddTask}>
+        Add Task
+      </Button>
+    </Box>
   );
 };
 
