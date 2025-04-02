@@ -3,7 +3,7 @@ import { TextField, Button, Box, Typography, Card, CardContent, Checkbox, IconBu
 import { Edit, Delete } from '@mui/icons-material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import AdapterDateFns from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
