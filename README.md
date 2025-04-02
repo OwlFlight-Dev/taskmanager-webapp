@@ -1,7 +1,3 @@
-Here is the markdown version of the documentation:
-
-markdown
-Copy
 # Task Manager App - Getting Started
 
 Follow the steps below to get the project up and running locally.
