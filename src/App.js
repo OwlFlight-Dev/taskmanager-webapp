@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography, Card, CardContent, IconButton } from '@mui/material';
+import { TextField, Button, Box, Typography, Card, CardContent, IconButton, Checkbox, FormControlLabel } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
-  const [taskDeadline, setTaskDeadline] = useState('');
+  const [taskDeadline, setTaskDeadline] = useState(''); // Deadline as a string
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
 
   // Add new task
@@ -102,13 +102,13 @@ const App = () => {
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
       
-      {/* Deadline Text Field */}
-      <TextField
-        label="Deadline (MM/DD/YYYY HH:mm)"
-        variant="outlined"
+      {/* Deadline Input */}
+      <input
+        type="datetime-local"
         value={taskDeadline}
         onChange={(e) => setTaskDeadline(e.target.value)}
         disabled={editingTask && editingTask.completed} // Disable if task is completed
+        style={{ padding: '8px', fontSize: '16px' }}
       />
 
       {editingTask ? (
@@ -139,21 +139,23 @@ const App = () => {
                   {task.description && <Typography variant="body2">{task.description}</Typography>}
                   {task.deadline && <Typography variant="body2" color="textSecondary">{task.deadline}</Typography>}
                 </Box>
-                <Box>
+                <Box display="flex" alignItems="center">
+                  {/* Task Completion Checkbox */}
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={task.completed}
+                        onChange={() => toggleComplete(task)} // Toggle completion on checkbox change
+                      />
+                    }
+                    label="Completed"
+                  />
                   <IconButton color="primary" onClick={() => startEditingTask(task)} disabled={task.completed}>
                     <Edit />
                   </IconButton>
                   <IconButton color="error" onClick={() => deleteTask(task)} disabled={task.completed}>
                     <Delete />
                   </IconButton>
-                  <Button
-                    variant="outlined"
-                    color={task.completed ? "secondary" : "primary"}
-                    onClick={() => toggleComplete(task)} // Toggle complete
-                    disabled={task.completed && editingTask}
-                  >
-                    {task.completed ? "Uncomplete" : "Complete"}
-                  </Button>
                 </Box>
               </Box>
             </CardContent>
