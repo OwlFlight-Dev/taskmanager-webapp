@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Card, CardContent, Checkbox, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import AdapterDateFns from '@mui/x-date-pickers/AdapterDateFns';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
-  const [taskDeadline, setTaskDeadline] = useState('');
+  const [taskDeadline, setTaskDeadline] = useState(null); // Use Date object for task deadline
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
 
   // Add new task
@@ -21,7 +24,7 @@ const App = () => {
       setTasks([...tasks, newTask]);
       setTaskTitle('');
       setTaskDescription('');
-      setTaskDeadline('');
+      setTaskDeadline(null); // Reset deadline
     }
   };
 
@@ -47,7 +50,7 @@ const App = () => {
       setEditingTask(null);
       setTaskTitle('');
       setTaskDescription('');
-      setTaskDeadline('');
+      setTaskDeadline(null); // Reset deadline
     }
   };
 
@@ -90,17 +93,18 @@ const App = () => {
         rows={3}
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
-      <TextField
-        label="Deadline"
-        type="date"
-        variant="outlined"
-        value={taskDeadline}
-        onChange={(e) => setTaskDeadline(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        disabled={editingTask && editingTask.completed} // Disable editing if task is completed
-      />
+      
+      {/* DateTime Picker for Deadline */}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimePicker
+          label="Deadline"
+          value={taskDeadline}
+          onChange={setTaskDeadline}
+          renderInput={(props) => <TextField {...props} />}
+          disabled={editingTask && editingTask.completed} // Disable if task is completed
+        />
+      </LocalizationProvider>
+
       {editingTask ? (
         <Button variant="contained" color="primary" onClick={saveTask}>
           Save Changes
@@ -120,7 +124,7 @@ const App = () => {
                 <Box>
                   <Typography variant="h6">{task.title}</Typography>
                   {task.description && <Typography variant="body2">{task.description}</Typography>}
-                  {task.deadline && <Typography variant="body2" color="textSecondary">{task.deadline}</Typography>}
+                  {task.deadline && <Typography variant="body2" color="textSecondary">{task.deadline.toString()}</Typography>}
                 </Box>
                 <Box>
                   <IconButton color="primary" onClick={() => startEditingTask(task)}>
