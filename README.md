@@ -33,6 +33,6 @@ Follow the steps below to get the project up and running locally.
 
     The application will run at http://localhost:3000. The page will automatically reload if you make any changes to the code.
 
-**Notes**
+## Notes
 
-    If you encounter any issues with missing dependencies or permissions, ensure that Node.js and npm are correctly installed on your machine.
+- If you encounter any issues with missing dependencies or permissions, ensure that Node.js and npm are correctly installed on your machine.
