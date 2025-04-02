@@ -69,7 +69,7 @@ const App = () => {
   };
 
   // Focus the date input field when the row is clicked
-  const handleDateClick = () => {
+  const handleDateRowClick = () => {
     if (deadlineRef.current) {
       deadlineRef.current.focus(); // Focus the input field
     }
@@ -119,7 +119,7 @@ const App = () => {
           cursor: 'pointer', // Make the entire row clickable
           padding: '10px 0',
         }}
-        onClick={handleDateClick}
+        onClick={handleDateRowClick} // Trigger focus when clicking anywhere in the row
       >
         <Typography variant="body2">Deadline</Typography>
         <input
