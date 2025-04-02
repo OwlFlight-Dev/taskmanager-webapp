@@ -6,7 +6,7 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
-  const [taskDeadline, setTaskDeadline] = useState(''); // Use string for task deadline input
+  const [taskDeadline, setTaskDeadline] = useState(''); // Store the deadline as a string
   const [editingTask, setEditingTask] = useState(null);  // Keep track of the task being edited
 
   // Add new task
@@ -15,7 +15,7 @@ const App = () => {
       const newTask = {
         title: taskTitle,
         description: taskDescription,
-        deadline: taskDeadline,
+        deadline: taskDeadline, // Keep deadline as string
         completed: false,
       };
       setTasks([...tasks, newTask]);
@@ -30,7 +30,7 @@ const App = () => {
     setEditingTask(task);
     setTaskTitle(task.title);
     setTaskDescription(task.description);
-    setTaskDeadline(task.deadline);
+    setTaskDeadline(task.deadline || ''); // Set the deadline if it exists
   };
 
   // Save the edited task
@@ -91,12 +91,16 @@ const App = () => {
         disabled={editingTask && editingTask.completed} // Disable editing if task is completed
       />
       
-      {/* Deadline Text Field */}
+      {/* Deadline TextField with datetime-local */}
       <TextField
-        label="Deadline (MM/DD/YYYY HH:mm)"
+        label="Deadline"
         variant="outlined"
+        type="datetime-local" // Date-time picker input
         value={taskDeadline}
-        onChange={(e) => setTaskDeadline(e.target.value)}
+        onChange={(e) => setTaskDeadline(e.target.value)} // Update the deadline state
+        InputLabelProps={{
+          shrink: true, // Make sure the label is not overlapping with the input
+        }}
         disabled={editingTask && editingTask.completed} // Disable if task is completed
       />
 
